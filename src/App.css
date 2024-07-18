@@ -1,0 +1,13 @@
+.icon-bg::-webkit-scrollbar {
+    width: 8px;
+}
+
+.icon-bg::-webkit-scrollbar-thumb {
+    background: #F15757;
+    visibility: hidden;
+    border-radius: 5px;
+}
+
+.icon-bg:hover::-webkit-scrollbar-thumb {
+    visibility: visible;
+}
