@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import PropTypes from 'prop-types'
 
 import { Smile  } from "lucide-react";
 import { Slider } from "./ui/slider";
@@ -16,6 +17,7 @@ const IconController = ({selectedColor}) => {
   useEffect(() => {
 
     const updatedValues = {
+      ...storageValues,
       iconSize: size,
       iconRotate: degree,
       iconColor: color,
@@ -24,10 +26,11 @@ const IconController = ({selectedColor}) => {
 
     localStorage.setItem('values', JSON.stringify(updatedValues));
 
-  }, [size, degree, color])
+  }, [size, degree, color, storageValues])
 
   return (
-    <div className="icon-controller">
+    <div className="icon-controller h-full box-border">
+      <div className="content h-150">
       <label>Icon</label>
       <div className="p-3 w-[50px] h-[50px] rounded-md my-2 cursor-pointer bg-gray-200">
         <Smile className="" />
@@ -58,8 +61,13 @@ const IconController = ({selectedColor}) => {
           selectedColor(color)
         }}/>
       </div>
+      </div>
     </div>
   )
+}
+
+IconController.propTypes = {
+  selectedColor: PropTypes.string,
 }
 
 export default IconController
