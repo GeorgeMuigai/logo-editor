@@ -9,18 +9,19 @@ import BackgroundController from './components/BackgroundController'
 
 function App() {
   const [contId, setContId] = useState(0);
+  const [color, setColor] = useState("fff");
   return (
     <>
       <Header/>
       <Sidebar selectedIndex={(value) => {
         setContId(value)
       }} />
-      <div className='ml-64 grid grid-cols-1 md:grid-cols-6 overflow-hidden'>
+      <div className='a-controller ml-64 grid grid-cols-1 md:grid-cols-6 fixed'>
         <div className='icon-bg md:col-span-2 p-3 pb-5 overflow-auto h-screen'>
-          {contId == 0 ? <IconController /> : contId == 1 ? <BackgroundController /> : setContId(contId)}
+          {contId == 0 ? <IconController selectedColor={(color) => {setColor(color); console.log(color)}} /> : contId == 1 ? <BackgroundController /> : setContId(contId)}
         </div>
-        <div className='md:col-span-3 bg-yellow-200'>Icon Preview</div>
-        <div className='bg-yellow-300'>Ads Side</div>
+        <div className='md:col-span-3 '>Icon Preview</div>
+        <div className={"bg-rgba(255, 25, 255, 1)"}>Ads Side</div>
       </div>
     </>
   )
