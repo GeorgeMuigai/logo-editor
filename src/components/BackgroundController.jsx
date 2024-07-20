@@ -1,16 +1,21 @@
 import PropTypes from 'prop-types';
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Slider } from "./ui/slider";
 import ColorPickerController from "./ColorPickerController";
+import { UpdateStorageContext } from './context/UpdateStorageContext';
 
-const BackgroundController = ({selectedColor}) => {
-
-  const [bg, setBg] = useState("fff")
-  const [rounded, setRounded] = useState(0);
-  const [padding, setPadding] = useState(0);
+const BackgroundController = () => {
 
   const storageValues = JSON.parse(localStorage.getItem('values'));
+
+  const [bg, setBg] = useState(storageValues?.iconBg);
+  const [rounded, setRounded] = useState(storageValues?.iconRadius);
+  const [padding, setPadding] = useState(storageValues?.iconPadding);
+
+  // context
+  const {updateStorage, setUpdateStorage} = useContext(UpdateStorageContext);
+
 
   useEffect(() => {
 
@@ -21,6 +26,7 @@ const BackgroundController = ({selectedColor}) => {
       iconPadding: padding,
     }
 
+    setUpdateStorage(updatedValues); // update context
     localStorage.setItem("values",JSON.stringify(updatedValues));
   })
 
@@ -30,25 +36,24 @@ const BackgroundController = ({selectedColor}) => {
 
       <div className="labels mb-2 flex items-center justify-between">
         <label>Border Radius</label>
-        <p>{rounded} px</p>
+        <p>{storageValues?.iconRadius} px</p>
       </div>
       <div className="slider mb-8">
-        <Slider defaultValue={[rounded]} min={0} max={300} step={1} onValueChange={(value) => setRounded(value)}/>
+        <Slider defaultValue={[storageValues?.iconRadius]} min={0} max={300} step={1} onValueChange={(value) => setRounded(value)}/>
       </div>
 
       <div className="labels mb-2 flex items-center justify-between">
         <label>Padding</label>
-        <p>{padding} px</p>
+        <p>{storageValues?.iconPadding} px</p>
       </div>
       <div className="slider mb-8">
-        <Slider defaultValue={[padding]} min={0} max={300} step={1} onValueChange={(value) => setPadding(value)}/>
+        <Slider defaultValue={[storageValues?.iconPadding]} min={0} max={300} step={1} onValueChange={(value) => setPadding(value)}/>
       </div>
 
       <div className="color">
         <label>Background {bg}</label>
         <ColorPickerController hideController={false} selectedColor={(color)=> {
           setBg(color);
-          selectedColor(color)
         }}/>
       </div>
       </div>

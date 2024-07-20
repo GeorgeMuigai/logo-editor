@@ -1,18 +1,23 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import PropTypes from 'prop-types'
 
 import { Smile  } from "lucide-react";
 import { Slider } from "./ui/slider";
 import ColorPickerController from "./ColorPickerController";
+import { UpdateStorageContext } from "./context/UpdateStorageContext";
 
 
-const IconController = ({selectedColor}) => {
-
-  const [size, setSize] = useState(50);
-  const [degree, setDegree] = useState(0);
-  const [color, setColor] = useState("fff");
+const IconController = () => {
 
   const storageValues = JSON.parse(localStorage.getItem("values"));
+
+  const [size, setSize] = useState(storageValues?.iconSize);
+  const [degree, setDegree] = useState(storageValues?.iconRotate);
+  const [color, setColor] = useState(storageValues?.iconColor);
+
+  // context 
+  const {updateStorage, setUpdateStorage} = useContext(UpdateStorageContext);
+
 
   useEffect(() => {
 
@@ -21,9 +26,10 @@ const IconController = ({selectedColor}) => {
       iconSize: size,
       iconRotate: degree,
       iconColor: color,
-      icon: "smile"
+      icon: "Smile"
     }
 
+    setUpdateStorage(updatedValues); // update context
     localStorage.setItem('values', JSON.stringify(updatedValues));
 
   }, [size, degree, color, storageValues])
@@ -38,27 +44,26 @@ const IconController = ({selectedColor}) => {
 
       <div className="labels mb-2 flex items-center justify-between">
         <label>Size</label>
-        <p>{size} px</p>
+        <p>{storageValues?.iconSize} px</p>
       </div>
 
       <div className="slider mb-8">
-        <Slider defaultValue={[size]} min={50} max={300} step={1} onValueChange={(value) => setSize(value)}/>
+        <Slider defaultValue={[storageValues?.iconSize]} min={50} max={300} step={1} onValueChange={(value) => setSize(value)}/>
       </div>
 
       <div className="labels mb-2 flex items-center justify-between">
         <label>Rotate</label>
-        <p>{degree} {'\u00B0'}</p>
+        <p>{storageValues?.iconRotate} {'\u00B0'}</p>
       </div>
 
       <div className="slider mb-8">
-        <Slider defaultValue={[degree]} min={0} max={360} step={1} onValueChange={(value) => setDegree(value)}/>
+        <Slider defaultValue={[storageValues?.iconRotate]} min={0} max={360} step={1} onValueChange={(value) => setDegree(value)}/>
       </div>
 
       <div className="color">
         <label>Icon Color</label>
         <ColorPickerController hideController={false} selectedColor={(color)=> {
           setColor(color);
-          selectedColor(color)
         }}/>
       </div>
       </div>

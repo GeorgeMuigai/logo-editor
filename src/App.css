@@ -16,6 +16,10 @@
     width: calc(100vw - 144px);
 }
 
+.icon-prev {
+    height: calc(100% - 73px);
+}
+
 @media (min-width: 768px) {
     .a-controller {
         width: calc(100vw - 256px);
