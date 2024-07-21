@@ -9,9 +9,9 @@ const BackgroundController = () => {
 
   const storageValues = JSON.parse(localStorage.getItem('values'));
 
-  const [bg, setBg] = useState(storageValues?.iconBg);
-  const [rounded, setRounded] = useState(storageValues?.iconRadius);
-  const [padding, setPadding] = useState(storageValues?.iconPadding);
+  const [bg, setBg] = useState(storageValues?.iconBg ? storageValues?.iconBg : "rgb(210, 198, 198)");
+  const [rounded, setRounded] = useState(storageValues?.iconRadius ? storageValues?.iconRadius : 0);
+  const [padding, setPadding] = useState(storageValues?.iconPadding ? storageValues?.iconPadding : 0);
 
   // context
   const {updateStorage, setUpdateStorage} = useContext(UpdateStorageContext);
@@ -28,7 +28,9 @@ const BackgroundController = () => {
 
     setUpdateStorage(updatedValues); // update context
     localStorage.setItem("values",JSON.stringify(updatedValues));
-  })
+  }, [bg, rounded, padding, storageValues])
+
+  const invertedPadding = 170 - storageValues?.iconPadding[0];
 
   return (
     <div className="bg-controller h-full box-border pt-5">
@@ -36,18 +38,18 @@ const BackgroundController = () => {
 
       <div className="labels mb-2 flex items-center justify-between">
         <label>Border Radius</label>
-        <p>{storageValues?.iconRadius} px</p>
+        <p>{rounded} px</p>
       </div>
       <div className="slider mb-8">
-        <Slider defaultValue={[storageValues?.iconRadius]} min={0} max={300} step={1} onValueChange={(value) => setRounded(value)}/>
+        <Slider defaultValue={[rounded]} min={0} max={300} step={1} onValueChange={(value) => setRounded(value)}/>
       </div>
 
       <div className="labels mb-2 flex items-center justify-between">
         <label>Padding</label>
-        <p>{storageValues?.iconPadding} px</p>
+        <p>{invertedPadding} px</p>
       </div>
       <div className="slider mb-8">
-        <Slider defaultValue={[storageValues?.iconPadding]} min={0} max={300} step={1} onValueChange={(value) => setPadding(value)}/>
+        <Slider defaultValue={[padding]} min={0} max={170} step={1} onValueChange={(value) => setPadding(value)}/>
       </div>
 
       <div className="color">

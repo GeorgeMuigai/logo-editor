@@ -11,34 +11,10 @@ import { UpdateStorageContext } from './components/context/UpdateStorageContext'
 
 function App() {
 
-  let storageData = {}
-  const prevData = JSON.parse(localStorage.getItem("values"));
-
-  useEffect(() => {
-    if (Object.keys(prevData).length  <= 1) {
-      const defaultValues = {
-        iconSize: 50,
-        iconRotate: 0,
-        iconColor: "fff",
-        icon: "Smile",
-        iconBg: "rgb(206, 206, 206)",
-        iconRadius: 0,
-        iconPadding: 0
-      }
-
-      storageData = localStorage.setItem("values", JSON.stringify(defaultValues));
-
-      console.log(storageData);
-    } else {
-      console.log(prevData);
-      return;
-    }
-  }, []);
-
   const [contId, setContId] = useState(0);
   const [updateStorage, setUpdateStorage] = useState({})
 
-  const storageValues = JSON.parse(localStorage.getItem("values"));
+  // const storageValues = JSON.parse(localStorage.getItem("values"));
   return (
     <UpdateStorageContext.Provider value={{updateStorage, setUpdateStorage}}>
       <Header/>

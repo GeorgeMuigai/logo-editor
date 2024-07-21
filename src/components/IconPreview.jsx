@@ -11,34 +11,39 @@ const IconPreview = () => {
     const {updateStorage, setUpdateStorage} = useContext(UpdateStorageContext);
 
     useEffect(() => {
+
         const storageData = JSON.parse(localStorage.getItem('values'));
         setStorageValues(storageData)
 
         // console.log(storageData)
     }, [updateStorage])
 
-    const Icon = ({name, color, size}) => {
+    const Icon = ({name, color, size, rotate}) => {
         const LucidIcon = icons[name]
 
         if (!LucidIcon) return null;
 
         console.log(LucidIcon);
-        return <LucidIcon color={color} size={size} />
+
+        return <LucidIcon color={color} size={size} 
+        style={{
+            transform: `rotate(${rotate}deg)`
+        }}
+        />
     }
 
   return (
     <div className="icon-prev flex justify-center items-center">
 
-        <div className="icon-holder p-3 border-2 border-dotted border-gray-400 h-[400px] w-[400px]">
-            <div className="icon-border w-full h-full flex justify-center items-center rounded-[100]" style={{
+        <div className="icon-holder border-2 border-dotted border-gray-400 h-[400px] w-[400px] flex justify-center items-center" style={{
+            padding: storageValues?.iconPadding[0]
+        }}>
+            <div className="icon-border m-auto w-[95%] h-[95%] flex justify-center items-center rounded-[100]" style={{
                 background: storageValues?.iconBg,
                 borderRadius: storageValues?.iconRadius[0],
                 padding: storageValues?.padding,
             }}>
-                <Icon name={storageValues?.Icon} color={storageValues?.iconColor} size={storageValues?.iconSize}/>
-                <Icon />
-                {/* {console.log(storageValues?.icon, storageValues?.iconColor, storageValues?.iconSize)} */}
-                {/* <Smartphone size={"200px"} /> */}
+                <Icon name={storageValues?.icon} color={storageValues?.iconColor} size={storageValues?.iconSize} rotate={storageValues?.iconRotate}/>
             </div>
         </div>
 
@@ -50,6 +55,7 @@ IconPreview.propTypes = {
     name: PropTypes.string,
     color: PropTypes.string,
     size: PropTypes.number,
+    rotate: PropTypes.number,
 }
 
 export default IconPreview

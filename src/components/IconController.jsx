@@ -9,18 +9,19 @@ import { UpdateStorageContext } from "./context/UpdateStorageContext";
 
 const IconController = () => {
 
-  const storageValues = JSON.parse(localStorage.getItem("values"));
-
-  const [size, setSize] = useState(storageValues?.iconSize);
-  const [degree, setDegree] = useState(storageValues?.iconRotate);
-  const [color, setColor] = useState(storageValues?.iconColor);
-
   // context 
   const {updateStorage, setUpdateStorage} = useContext(UpdateStorageContext);
 
+  const storageValues = JSON.parse(localStorage.getItem("values"));
+
+  const [size, setSize] = useState(storageValues ? storageValues?.iconSize : 50);
+  const [degree, setDegree] = useState(storageValues ? storageValues?.iconRotate : 0);
+  const [color, setColor] = useState(storageValues ? storageValues?.iconColor : "fff");
+
+
 
   useEffect(() => {
-
+    
     const updatedValues = {
       ...storageValues,
       iconSize: size,
@@ -44,25 +45,25 @@ const IconController = () => {
 
       <div className="labels mb-2 flex items-center justify-between">
         <label>Size</label>
-        <p>{storageValues?.iconSize} px</p>
+        <p>{size} px</p>
       </div>
 
       <div className="slider mb-8">
-        <Slider defaultValue={[storageValues?.iconSize]} min={50} max={300} step={1} onValueChange={(value) => setSize(value)}/>
+        <Slider defaultValue={[size]} min={50} max={300} step={1} onValueChange={(value) => setSize(value)}/>
       </div>
 
       <div className="labels mb-2 flex items-center justify-between">
         <label>Rotate</label>
-        <p>{storageValues?.iconRotate} {'\u00B0'}</p>
+        <p>{degree} {'\u00B0'}</p>
       </div>
 
       <div className="slider mb-8">
-        <Slider defaultValue={[storageValues?.iconRotate]} min={0} max={360} step={1} onValueChange={(value) => setDegree(value)}/>
+        <Slider defaultValue={[degree]} min={0} max={360} step={1} onValueChange={(value) => setDegree(value)}/>
       </div>
 
       <div className="color">
         <label>Icon Color</label>
-        <ColorPickerController hideController={false} selectedColor={(color)=> {
+        <ColorPickerController hideController={true} selectedColor={(color)=> {
           setColor(color);
         }}/>
       </div>
